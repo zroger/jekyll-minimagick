@@ -17,7 +17,9 @@ module Jekyll
         @base = base
         @dir  = dir
         @name = name
-        @preset = preset
+        @dst_dir = preset.delete('destination')
+        @src_dir = preset.delete('source')
+        @commands = preset
       end
 
       # Obtains source file path by substituting the preset's source directory
@@ -25,7 +27,7 @@ module Jekyll
       #
       # Returns source file path.
       def path
-        File.join(@base, @dir.sub(@preset['destination'], @preset['source']), @name)
+        File.join(@base, @dir.sub(@dst_dir, @src_dir), @name)
       end
 
       # Use MiniMagick to create a derivative image at the destination
@@ -35,13 +37,16 @@ module Jekyll
       # Returns false if the file was not modified since last time (no-op).
       def write(dest)
         dest_path = destination(dest)
-        
+
         return false if File.exist? dest_path and !modified?
+
         @@mtimes[path] = mtime
 
         FileUtils.mkdir_p(File.dirname(dest_path))
         image = ::MiniMagick::Image.open(path)
-        image.resize @preset['resize']
+        @commands.each_pair do |command, arg|
+          image.send command, arg
+        end
         image.write dest_path
 
         true
