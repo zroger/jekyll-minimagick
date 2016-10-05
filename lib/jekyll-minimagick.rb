@@ -40,7 +40,7 @@ module Jekyll
 
         return false if File.exist? dest_path and !modified?
 
-        @@mtimes[path] = mtime
+        self.class.mtimes[path] = mtime
 
         FileUtils.mkdir_p(File.dirname(dest_path))
         image = ::MiniMagick::Image.open(path)
