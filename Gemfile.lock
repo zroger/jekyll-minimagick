@@ -20,15 +20,11 @@ GEM
     liquid (2.2.2)
     maruku (0.6.0)
       syntax (>= 1.0.0)
-    mini_magick (3.3)
-      subexec (~> 0.1.0)
-    subexec (0.1.0)
+    mini_magick (4.9.5)
     syntax (1.0.0)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  jekyll (>= 0.10.0)
   jekyll-minimagick!
-  mini_magick (>= 3.3)
